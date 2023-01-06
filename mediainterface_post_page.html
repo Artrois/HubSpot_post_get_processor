@@ -8,11 +8,14 @@
 
   </body>
   <script type="text/javascript">
+  
+  //our function to post email and fetch unique ID
     async function getPwd() {
       let form  = document.forms[0];
 
       let user_email = document.getElementsByName("email")[0];
       let usr_pwd = document.getElementsByName("usr_pwd")[0];
+      //make sure server has set headers to allow the URL for cors
       let mi_url = "https://0x882p-8080.preview.csb.app/users" //"https://forms-eu1.hsforms.com"
       
 			//event.preventDefault();
@@ -30,10 +33,12 @@
      data = await response.json().catch(function(err) {
         console.log(`Error: ${err}` )
       });
-      form.usr_pwd.value = data.usr_pwd;
-      console.log("received: " + data.usr_pwd);
-      form.submit();
+     form.usr_pwd.value = data.usr_pwd;
+     console.log("received: " + data.usr_pwd);
+     form.submit();
     }
+    
+    //register event listeners and inject hidden <input>
     if (document.forms.length > 0)
     {
       if (document.forms[0].id.startsWith('hsForm'))
