@@ -1,0 +1,55 @@
+<html>
+  <body>
+    <form method="POST" id="hsForm" action="https://0x882p-8080.preview.csb.app/post_msg">
+      <input type="text" name="name" value="NAME">
+      <input type ="email" name="email" value="EMAIL">
+      <input type="submit" value="Register" >
+    </form>
+
+  </body>
+  <script type="text/javascript">
+    async function getPwd() {
+      let form  = document.forms[0];
+
+      let user_email = document.getElementsByName("email")[0];
+      let usr_pwd = document.getElementsByName("usr_pwd")[0];
+      let mi_url = "https://0x882p-8080.preview.csb.app/users" //"https://forms-eu1.hsforms.com"
+      
+			//event.preventDefault();
+     const response = await fetch(mi_url, { 
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json' },
+        body: JSON.stringify({data: form.email.value}) // body data type must match "Content-Type" header
+      }
+      ).catch(function(err) {
+        console.log(`Error: ${err}` )
+      });
+      
+     data = await response.json().catch(function(err) {
+        console.log(`Error: ${err}` )
+      });
+      form.usr_pwd.value = data.usr_pwd;
+      console.log("received: " + data.usr_pwd);
+      form.submit();
+    }
+    if (document.forms.length > 0)
+    {
+      if (document.forms[0].id.startsWith('hsForm'))
+      {
+          let form  = document.forms[0];
+          form.addEventListener('submit', (event) => { event.preventDefault(); });
+          const submitButton = form.querySelector('[type=Submit]');
+          submitButton.addEventListener('click', () => {getPwd()});
+          let new_input = document.createElement("input");
+          new_input.type="text";
+          new_input.name="usr_pwd";
+          new_input.hidden = true;
+          form.appendChild(new_input);
+          //document.addEventListener('DOMContentLoaded', getPwd(), false);
+       }
+    }
+
+  </script>
+</html>
