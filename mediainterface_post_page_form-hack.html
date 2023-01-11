@@ -53,9 +53,10 @@
 				form.passwort_mira_testversion.value = data.result.password;
      		console.log("received: " + data.result.password);
 
-				//setTimeout(function() {
+				setTimeout(function() {
+        	//submitButton.click();
        	 //form.submit();
-       // }, 200);
+        }, 200);
         
       }else{
       	//print some error
@@ -95,16 +96,16 @@
       waitForElm('input[name="email"]').then((elm) => {
         // your element is ready
         //document.forms[0].email.addEventListener('blur', (event) => { getPwd(); });
-        elm.addEventListener('blur', (event) => { getPwd(); });
-        //let form  = document.forms[0];
+        //elm.addEventListener('blur', (event) => { getPwd(); });
+        let form  = document.forms[0];
         //form.addEventListener('submit', (event) => { event.preventDefault(); getPwd(submitButton)});
-        //submitdiv = document.querySelector('div[class$="actions"]');
-        //const submitButton = form.querySelector('[type=Submit]');
-        //new_node = submitButton.cloneNode(true);
-        //submitdiv.appendChild(new_node);
-        //submitButton.style.visibility = "hidden";
-        //form.addEventListener('submit', (event) => { event.preventDefault(); return false;});
-        //new_node.addEventListener('click', (event) => {event.stopPropagation();});
+        submitdiv = document.querySelector('div[class$="actions"]');
+        const submitButton = form.querySelector('[type=Submit]');
+        new_node = submitButton.cloneNode(true);
+        submitdiv.appendChild(new_node);
+        submitButton.style.visibility = "hidden";
+        form.addEventListener('submit', (event) => { event.preventDefault(); return false;});
+        new_node.addEventListener('click', (event) => {event.stopPropagation();});
         
         console.log("MI event listener registered.")
       });
