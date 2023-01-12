@@ -10,14 +10,29 @@
       <input type="text" name="passwort_mira_testversion" value="">
       <br>
       <div class="actions">
-        <input type="submit" value="Jetzt testen 1" >
+        <input type="submit" value="Jetzt testen" >
       </div>
     </form>
 
   </body>
   
+
+  <style>
+    .button {
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    .button2 {background-color: #008CBA;} /* Blue */
+  </style>
   <script type="text/javascript">
-  //*********MI function to post email and fetch unique ID
+ //*********MI function to post email and fetch unique ID
     async function getPwd(submitButton) {
       let form  = document.forms[0];
 
@@ -53,10 +68,9 @@
 				form.passwort_mira_testversion.value = data.result.password;
      		console.log("received: " + data.result.password);
 
-				setTimeout(function() {
-        	//submitButton.click();
-       	 //form.submit();
-        }, 200);
+				//setTimeout(function() {
+       	 form.submit();
+       // }, 200);
         
       }else{
       	//print some error
@@ -98,21 +112,24 @@
         //document.forms[0].email.addEventListener('blur', (event) => { getPwd(); });
         //elm.addEventListener('blur', (event) => { getPwd(); });
         let form  = document.forms[0];
-        //form.addEventListener('submit', (event) => { event.preventDefault(); getPwd(submitButton)});
+        form.addEventListener('submit', (event) => { event.preventDefault(); });
         submitdiv = document.querySelector('div[class$="actions"]');
         const submitButton = form.querySelector('[type=Submit]');
-        new_node = submitButton.cloneNode(true);
-        submitdiv.appendChild(new_node);
+        let newBtn = document.createElement("div");
+        newBtn.setAttribute('class','button button2');
+        document.createTextNode("Hi there and greetings!");
+				newBtn.appendChild(document.createTextNode(submitButton.value));
+        //new_node = submitButton.cloneNode(true);
+        submitdiv.appendChild(newBtn);
         submitButton.style.visibility = "hidden";
-        form.addEventListener('submit', (event) => { event.preventDefault(); return false;});
-        new_node.addEventListener('click', (event) => {event.stopPropagation();});
+        newBtn.addEventListener('click', (event) => {getPwd(submitButton);}, false);
         
         console.log("MI event listener registered.")
       });
 
     });
-  //*********END: our function to post email and fetch unique ID
+ //*********END: our function to post email and fetch unique ID
   </script>
-  
+
   
 </html>
