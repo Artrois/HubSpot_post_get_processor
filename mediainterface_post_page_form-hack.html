@@ -31,105 +31,111 @@
     }
     .button2 {background-color: #008CBA;} /* Blue */
   </style>
-  <script type="text/javascript">
- //*********MI function to post email and fetch unique ID
-    async function getPwd(submitButton) {
-      let form  = document.forms[0];
-
-      //let user_email = document.getElementsByName("email")[0];
-      //let usr_pwd = document.getElementsByName("passwort_mira_testversion")[0];
-      //make sure server has set headers to allow the URL for cors
-      let mi_url = "https://0x882p-8080.preview.csb.app/users/register/trial?api_key=" + "KEY" //"https://forms-eu1.hsforms.com"
-      //we dont proceed if email is not valid
-      let mailformat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!form.email.value.match(mailformat)){
-      	console.log("email format invalid");
-      	return;
-      }
-      
-			//event.preventDefault();
-     const response = await fetch(mi_url, { 
-        method: 'POST',
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json' },
-        body: JSON.stringify({email: form.email.value}) // body data type must match "Content-Type" header
-      }
-      ).catch(function(err) {
-        console.log(`Error: ${err}` )
-      });
-      
-     data = await response.json().catch(function(err) {
-        console.log(`Error: ${err}` ); 
-        return;
-      });
-      //check that we received proper content
-      if(data.succeeded && data.errors.length == 0){
-				form.passwort_mira_testversion.value = data.result.password;
-     		console.log("received: " + data.result.password);
-
-				//setTimeout(function() {
-       	 form.submit();
-       // }, 200);
-        
-      }else{
-      	//print some error
-        submitdiv = document.querySelector('div[class$="actions"]');
-        new_div = document.createElement("div");
-        new_div.innerHTML = '<br> <p style="color:#FF0000">Etwas ist schiefgegangen. Bitte laden Sie die Seite erneut (STR+R) und versuchen Sie es noch einmal!</p>';
-        submitdiv.appendChild(new_div);
-        //we dont submit the form here
-      }
-
-    }
-    
-    //async function to wait for a DOM element
-    function waitForElm(selector) {
-      return new Promise(resolve => {
-          if (document.querySelector(selector)) {
-              return resolve(document.querySelector(selector));
-          }
-
-          const observer = new MutationObserver(mutations => {
-              if (document.querySelector(selector)) {
-                  resolve(document.querySelector(selector));
-                  observer.disconnect();
-              }
-          });
-
-          observer.observe(document.body, {
-              childList: true,
-              subtree: true
-          });
-      });
-    }
-    
-		//register element that we want to wait for
-   // var $someElement = document.querySelector('input[name="email"]');
-    document.addEventListener('DOMContentLoaded', e => {
-      waitForElm('input[name="email"]').then((elm) => {
-        // your element is ready
-        //document.forms[0].email.addEventListener('blur', (event) => { getPwd(); });
-        //elm.addEventListener('blur', (event) => { getPwd(); });
-        let form  = document.forms[0];
-        form.addEventListener('submit', (event) => { event.preventDefault(); });
-        submitdiv = document.querySelector('div[class$="actions"]');
-        const submitButton = form.querySelector('[type=Submit]');
-        let newBtn = document.createElement("div");
-        newBtn.setAttribute('class','button button2');
-        document.createTextNode("Hi there and greetings!");
-				newBtn.appendChild(document.createTextNode(submitButton.value));
-        //new_node = submitButton.cloneNode(true);
-        submitdiv.appendChild(newBtn);
-        submitButton.style.visibility = "hidden";
-        newBtn.addEventListener('click', (event) => {getPwd(submitButton);}, false);
-        
-        console.log("MI event listener registered.")
-      });
-
-    });
- //*********END: our function to post email and fetch unique ID
-  </script>
+<script type="text/javascript">
+  //*********MI function to post email and fetch unique ID
+     async function getPwd(submitButton) {
+       let form  = document.forms[0];
+ 
+       //let user_email = document.getElementsByName("email")[0];
+       //let usr_pwd = document.getElementsByName("passwort_mira_testversion")[0];
+       //make sure server has set headers to allow the URL for cors
+       let api_key = "megecaSfLRgb5uSJM9zLemvRumMjyGnT";
+       let mi_url = "https://prod-mi-identity-app.azurewebsites.net/users/register/trial?api_key=" + api_key;
+       //let mi_url = "https://0x882p-8080.preview.csb.app/users/register/trial?api_key=" + api_key; 
+       //we dont proceed if email is not valid
+       let mailformat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+       if(!form.email.value.match(mailformat)){
+         console.log("email format invalid");
+         return;
+       }
+       
+       //event.preventDefault();
+      const response = await fetch(mi_url, { 
+         method: 'POST',
+         headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json' },
+         body: JSON.stringify({email: form.email.value}) // body data type must match "Content-Type" header
+       }
+       ).catch(function(err) {
+         console.log(`Error: ${err}` )
+       });
+       
+      data = await response.json().catch(function(err) {
+         console.log(`Error: ${err}` ); 
+         return;
+       });
+       
+       console.log("received response: ", data);
+       //check that we received proper content
+       if(data.succeeded && data.errors ==  null){
+         form.passwort_mira_testversion.value = data.result.password;
+          console.log("received pwd: " + data.result.password);
+ 
+         //setTimeout(function() {
+           form.submit();
+          //submitButton.click();
+        // }, 200);
+         
+       }else{
+         //print some error
+         submitdiv = document.querySelector('div[class$="actions"]');
+         new_div = document.createElement("div");
+         new_div.innerHTML = '<br> <p style="color:#FF0000">Etwas ist schiefgegangen. Waren Sie schon mal bei uns registriert? Falls nicht, laden Sie bitte die Seite erneut (STR+R) und versuchen Sie es noch einmal!</p>';
+         submitdiv.appendChild(new_div);
+         //we dont submit the form here
+       }
+ 
+     }
+     
+     //async function to wait for a DOM element
+     function waitForElm(selector) {
+       return new Promise(resolve => {
+           if (document.querySelector(selector)) {
+               return resolve(document.querySelector(selector));
+           }
+ 
+           const observer = new MutationObserver(mutations => {
+               if (document.querySelector(selector)) {
+                   resolve(document.querySelector(selector));
+                   observer.disconnect();
+               }
+           });
+ 
+           observer.observe(document.body, {
+               childList: true,
+               subtree: true
+           });
+       });
+     }
+     
+     //register element that we want to wait for
+    // var $someElement = document.querySelector('input[name="email"]');
+     document.addEventListener('DOMContentLoaded', e => {
+       waitForElm('input[name="email"]').then((elm) => {
+         // your element is ready
+         //document.forms[0].email.addEventListener('blur', (event) => { getPwd(); });
+         //elm.addEventListener('blur', (event) => { getPwd(); });
+         let form  = document.forms[0];
+         form.addEventListener('submit', (event) => { event.preventDefault(); });
+         submitdiv = document.querySelector('div[class$="actions"]');
+         const submitButton = form.querySelector('[type=Submit]');
+         let newBtn = document.createElement("div");
+         newBtn.setAttribute('class','button button2');
+         document.createTextNode("Hi there and greetings!");
+         newBtn.appendChild(document.createTextNode(submitButton.value));
+         //new_node = submitButton.cloneNode(true);
+         submitdiv.appendChild(newBtn);
+         submitButton.style.visibility = "hidden";
+         newBtn.addEventListener('click', (event) => {getPwd(submitButton);}, false);
+         
+         console.log("MI event listener registered.")
+       });
+ 
+     });
+  //*********END: our function to post email and fetch unique ID
+   </script>
+   
 
   
 </html>
