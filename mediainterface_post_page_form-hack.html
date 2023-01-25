@@ -44,8 +44,13 @@
        //let mi_url = "https://0x882p-8080.preview.csb.app/users/register/trial?api_key=" + api_key; 
        //we dont proceed if email is not valid
        let mailformat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-       if(!form.email.value.match(mailformat)){
+       if(!form.email.value.match(mailformat) ){
          console.log("email format invalid");
+         return;
+       }
+
+       if (form.firstname.value.length < 2 || form.lastname.value.length < 2 || form.company.value.length < 2 || !form.querySelector('[type=checkbox]').checked){
+          console.log("Firstname, Lastname or Company not set or legal consnet not selected");
          return;
        }
        
