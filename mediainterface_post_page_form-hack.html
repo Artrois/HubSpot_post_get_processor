@@ -39,19 +39,27 @@
        //let user_email = document.getElementsByName("email")[0];
        //let usr_pwd = document.getElementsByName("passwort_mira_testversion")[0];
        //make sure server has set headers to allow the URL for cors
-       let api_key = "megecaSfLRgb5uSJM9zLemvRumMjyGnT";
-       let mi_url = "https://prod-mi-identity-app.azurewebsites.net/users/register/trial?api_key=" + api_key;
+       let api_key = "EMPTY";
+       let mi_url = "https://prod-fr-mi-identity.azurewebsites.net/users/register/trial?api_key=" + api_key;
        //let mi_url = "https://0x882p-8080.preview.csb.app/users/register/trial?api_key=" + api_key; 
        //we dont proceed if email is not valid
        let mailformat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
        if(!form.email.value.match(mailformat) ){
          console.log("email format invalid");
+         show_fault_message('<br> <p style="color:#FF0000">Die angegebene eMail Adresse hat falsches Format. Bitte korrigieren Sie Ihre eMail Adresse. </p>');
          return;
        }
 
+       if(!form.passwort_mira_testversion){
+        show_fault_message('<br> <p style="color:#FF0000">Fehler in der HubSpot Form, bitte melden Sie den Fehler an MediaInterface GmbH: info@mediainterface.de </p>')
+        return
+       }
+
        if (form.firstname.value.length < 2 || form.lastname.value.length < 2 || form.company.value.length < 2 || !form.querySelector('[type=checkbox]').checked){
-          console.log("Firstname, Lastname or Company not set or legal consnet not selected");
-         return;
+          console.log("Firstname, Lastname or Company not set or legal consent not selected");
+          //print some error
+          show_fault_message('<br> <p style="color:#FF0000">Fehler: alle Pflichtfelder müssen ausgefüllt sein. Bitte vervollständigen Sie all Felder und versuchen es erneut. </p>');
+          
        }
        
        //event.preventDefault();
@@ -84,13 +92,25 @@
          
        }else{
          //print some error
-         submitdiv = document.querySelector('div[class$="actions"]');
-         new_div = document.createElement("div");
-         new_div.innerHTML = '<br> <p style="color:#FF0000">Etwas ist schiefgegangen. Waren Sie schon mal bei uns registriert? Falls nicht, laden Sie bitte die Seite erneut (STR+R) und versuchen Sie es noch einmal!</p>';
-         submitdiv.appendChild(new_div);
-         //we dont submit the form here
+         fault_msg = '<br> <p style="color:#FF0000">Etwas ist schiefgegangen. Waren Sie schon mal bei uns registriert? Falls nicht, laden Sie bitte die Seite erneut (STR+R) und versuchen Sie es noch einmal! <br>Fehlermeldung: '+ data.errors[0].message + '</p>';
+         show_fault_message(fault_msg);
+          //we dont submit the form here
        }
  
+     }
+
+     function show_fault_message(fault_msg){
+        existing_div = document.getElementById('fault_msg_div');
+        
+        if(existing_div){
+          new_div= existing_div;
+        }else{
+          submitdiv = document.querySelector('div[class$="actions"]');
+          new_div = document.createElement("div");
+          new_div.setAttribute('id','fault_msg_div');
+          submitdiv.appendChild(new_div);
+        }
+        new_div.innerHTML = fault_msg;
      }
      
      //async function to wait for a DOM element
